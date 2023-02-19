@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Google Map</title>
+	<style>
+		#map {
+			height: 100%;
+			width: 100%;
+		}
+		html, body {
+			height: 100%;
+			margin: 0;
+			padding: 0;
+		}
+	</style>
+</head>
+<body>
+	<form id="form">
+		Longitude: <input type="number" name="Longitude" id = 'Longitude'>
+		Latitude: <input type="number" name="Latitude" id = 'Latitude'><br>
+		<input type="button" onclick="myFunction()" value="Submit">
+	</form>
+	      <input onclick="deleteMarkers();" type=button value="Delete Markers">
+	      	<div id="map"></div>
+
+	<script type="text/javascript">
+		var marker;
+		function myFunction(){
+			var PGA = (Math.random() * 0.4) + 0.1;
+			var Sa = (Math.random() * 0.2) + 0.1;
+			var Vs = (Math.random() * 1600) + 400;
+			var Magnitude = (Math.random() * 3) + 5;
+			var R = (Math.random() * 190) + 10;
+			var CAV = Math.random() * 1.5;
+			var damageLevel;
+			if(0 < CAV && damageLevel < 0.5){
+				damageLevel = "No damage";
+			}
+			else if(0.5 < CAV && CAV < 1.0){
+				damageLevel = "Minor damage";
+			}
+			else{
+				damageLevel = "Serious damage"
+			}
+
+			var recommendLayer = 15;
+			var lng = document.getElementById('Longitude').value;
+			var lat = document.getElementById('Latitude').value;
+			lng = Number(lng);
+			lat = Number(lat);
+			var location = {lat: lat, lng: lng};
+
+			var contentString = '<div id="content">'+
+            '<div id="siteNotice">'+
+            '</div>'+
+            '<h3 id="firstHeading" class="firstHeading">Latitude:33.774848</h3>'+
+            '<h3 id="firstHeading" class="firstHeading">Longitude:-84.396349</h3>'+
+            '<h3 id="firstHeading" class="firstHeading">Confidence:88.27%</h3>'+
+            '<h3 id="firstHeading" class="firstHeading">Cumulative Absolute Velocity:0.385</h3>'+ 
+            '<h3 id="firstHeading" class="firstHeading">Damage Level:Minor damage</h3>'+ 
+            '<h3 id="firstHeading" class="firstHeading">Recommended Max Layer:21</h3>'+ 
+            '</div>'+
+            '</div>';
+			var infowindow = new google.maps.InfoWindow({
+				content: contentString
+			});
+			marker = new google.maps.Marker({
+				position: location,
+				map: map,
+				title: 'Current Location'
+			});
+			marker.setMap(map);
+			marker.addListener('click', function() {
+				infowindow.open(map, marker);
+  });
+			map.setCenter(location);
+
+	}
+	    var map;
+	    function initMap() {
+	    	map = new google.maps.Map(document.getElementById('map'), {
+	    		center: {lat: 33.774848, lng: -84.396349},
+	    		zoom: 16
+	    	});
+	    }
+	    // Deletes all markers in the array by removing references to them
+      function deleteMarkers() {
+       marker.setMap(null);
+        
+      }
+
+	</script>
+	<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCYEcNVuL0lHeKz96ffUlIm7q0rWxDp7LI&callback=initMap"
+    async defer></script>
+
+</body>
+</html>
+
